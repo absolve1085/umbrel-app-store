@@ -33,5 +33,6 @@ support: https://github.com/semillabitcoin/electrs-intel/issues
 dependencies: []
 icon: https://github.com/absolve1085/umbrel-app-store/raw/main/electrs-intel/icon.png
 gallery: []
-defaultPassword: ~
-submit: https://github.com/semillabitcoin/umbrel-app-store
+defaultUsername: ""
+submitter: absolve1085
+submission: https://github.com/absolve1085/umbrel-app-store
