@@ -1,0 +1,38 @@
+manifestVersion: 1
+id: electrs-intel-lite
+category: bitcoin
+name: Electrum Intel
+tagline: Intel de wallets y perfiles desde tu servidor Electrum
+description: |-
+  Observa el trafico de tu servidor Electrum (electrs, ElectrumX o Fulcrum —
+  cualquier backend de protocolo Electrum) y construye perfiles estilo chain
+  analysis: wallets, cuentas (BIP44), direcciones con y sin fondos, saldos,
+  historial de movimientos IN/OUT, UTXOs, contrapartes, co-gasto, direcciones
+  de cambio, geolocalizacion de IPs publicas, senales de intencion (esperando
+  cobro, preparando gasto, auditoria), watchlist con alertas y clustering por
+  co-observacion. Todo local, sin externalizar datos salvo la geolocalizacion
+  opcional de IPs (ip-api.com).
+
+  Requiere capturar el puerto RPC en claro (50001 por defecto). Si tu servidor
+  solo expone TLS (50002) el sniffer no podra leerlo.
+
+  IMPORTANTE: solo para tu propio servidor. Si tu servidor es publico,
+  informa del logging en tu politica de privacidad.
+version: "0.2.0"
+releaseNotes: >-
+  0.2.0 — primera version: sniffer de protocolo Electrum (electrs/ElectrumX/
+  Fulcrum), perfiles con wallets/cuentas/direcciones, saldos, historial,
+  UTXOs, contrapartes, geo, senales, watchlist y dashboard con token.
+port: 8877
+path: ""
+defaultPassword: ""
+developer: semillabitcoin
+website: https://semillabitcoin.com
+repo: https://github.com/semillabitcoin/electrs-intel
+support: https://github.com/semillabitcoin/electrs-intel/issues
+dependencies: []
+icon: https://raw.githubusercontent.com/semillabitcoin/umbrel-app-store/main/semillabitcoin-bed/icon.png
+gallery: []
+defaultUsername: ""
+submitter: absolve1085
+submission: https://github.com/absolve1085/umbrel-app-store

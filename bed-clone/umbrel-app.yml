@@ -1,0 +1,53 @@
+manifestVersion: 1
+id: bed-clone
+category: bitcoin
+name: BED Clone Test
+version: "0.3.0"
+tagline: Encrypt Bitcoin descriptor backups for redundant multisig storage
+description: >-
+  BED (Bitcoin Encrypted Backup) encrypts a multisig descriptor using
+  AES-256-GCM with any cosigner xpub as the key, producing a .bed binary that
+  only the holder of that xpub can decrypt.
+
+
+  Compatible with the BIP draft bitcoin/bips#1951 and Liana wallet interop
+  (crate v0.0.2). Each cosigner stores one .bed backup in a different physical
+  location from the xpub used to encrypt it — recovery requires anyone with
+  one .bed and the matching cosigner xpub to reconstruct the full descriptor.
+
+
+  v0.3.0 features:
+
+  - Encrypt and decrypt plain BIP-380 descriptors with multipath derivation (`<a;b>/*`).
+
+  - Liana JSON wallet backup passthrough — round-trip byte-identical, the JSON re-imports cleanly into Liana with name, balance, labels and descriptor preserved.
+
+  - Sparrow Wallet BIP-329 JSONL passthrough — preserves wallet labels; compose helper reconstructs the multisig descriptor from the JSONL header.
+
+  - Three output formats: binary `.bed`, armored text wrapper, and QR code (graceful fallback when payload exceeds QR capacity — binary and armored stay available).
+
+  - Optional opt-in history with on-device redb metadata store. Cleartext descriptor never persists.
+
+  - All processing local, over Tor or LAN. No telemetry, no external CDN, no font fetches.
+
+
+  WARNING: NEVER store a `.bed` file and the cosigner xpub used to encrypt it
+  in the same location. If an attacker finds both, they recover your full
+  descriptor.
+releaseNotes: >-
+  v0.3.0 — Liana JSON and Sparrow BIP-329 JSONL passthrough; QR graceful
+  fallback when payload exceeds QR capacity; file picker accepts
+  .txt/.descriptor/.json/.jsonl; small UX polish on the Encrypt tab.
+developer: Semilla Bitcoin
+website: https://semillabitcoin.com
+dependencies: []
+repo: https://github.com/semillabitcoin/descriptor-cifrado
+support: https://github.com/semillabitcoin/descriptor-cifrado/issues
+icon: https://raw.githubusercontent.com/semillabitcoin/umbrel-app-store/main/semillabitcoin-bed/icon.png
+port: 4380
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: Semilla Bitcoin
+submission: https://github.com/semillabitcoin/umbrel-app-store
