@@ -18,7 +18,11 @@ description: |-
 
   IMPORTANTE: solo para tu propio servidor. Si tu servidor es publico,
   informa del logging en tu politica de privacidad.
-version: 0.2.0
+version: "0.2.0"
+releaseNotes: >-
+  0.2.0 — primera version: sniffer de protocolo Electrum (electrs/ElectrumX/
+  Fulcrum), perfiles con wallets/cuentas/direcciones, saldos, historial,
+  UTXOs, contrapartes, geo, senales, watchlist y dashboard con token.
 port: 8877
 path: ""
 defaultPassword: ""
