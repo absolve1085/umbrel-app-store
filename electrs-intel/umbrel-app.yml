@@ -1,0 +1,31 @@
+manifestVersion: 1
+id: electrs-intel
+category: bitcoin
+name: Electrum Intel
+tagline: Intel de wallets y perfiles desde tu servidor Electrum
+description: |-
+  Observa el trafico de tu servidor Electrum (electrs, ElectrumX o Fulcrum —
+  cualquier backend de protocolo Electrum) y construye perfiles estilo chain
+  analysis: wallets, cuentas (BIP44), direcciones con y sin fondos, saldos,
+  historial de movimientos IN/OUT, UTXOs, contrapartes, co-gasto, direcciones
+  de cambio, geolocalizacion de IPs publicas, senales de intencion (esperando
+  cobro, preparando gasto, auditoria), watchlist con alertas y clustering por
+  co-observacion. Todo local, sin externalizar datos salvo la geolocalizacion
+  opcional de IPs (ip-api.com).
+
+  Requiere capturar el puerto RPC en claro (50001 por defecto). Si tu servidor
+  solo expone TLS (50002) el sniffer no podra leerlo.
+
+  IMPORTANTE: solo para tu propio servidor. Si tu servidor es publico,
+  informa del logging en tu politica de privacidad.
+version: 0.2.0
+port: 8877
+developer: semillabitcoin
+website: https://semillabitcoin.com
+repo: https://github.com/semillabitcoin/electrs-intel
+support: https://github.com/semillabitcoin/electrs-intel/issues
+dependencies: []
+icon: https://github.com/semillabitcoin/umbrel-app-store/raw/master/electrs-intel/icon.png
+gallery: []
+defaultPassword: ~
+submit: https://github.com/semillabitcoin/umbrel-app-store
