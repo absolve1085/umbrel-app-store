@@ -1,5 +1,6 @@
 #!/bin/sh
 DB=/data/snoop.db
+python /app/ensure_sniffer.py || echo "aviso: no pude desplegar el sniffer (docker.sock)"
 while true; do
   if [ "$ELECTRUM_SERVER" = "auto" ] || [ -z "$ELECTRUM_SERVER" ]; then
     SERVER=$(python /app/find_server.py 2>/dev/null | head -1)
