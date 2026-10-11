@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-import json, os, socket, io, tarfile, sys
+import json, os, socket, io, tarfile, sys, time
 
 SOCK = '/var/run/docker.sock'
 NAME = 'electrs-intel-sniffer'
-IMAGE = 'electrs-intel-sniffer:0.2.0'
+IMAGE = 'electrs-intel-sniffer:0.2.1'
 
 def req(method, path, body=None, raw=False):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -35,10 +35,21 @@ def build_image():
         info = tarfile.TarInfo('Dockerfile')
         info.size = len(df)
         t.addfile(info, io.BytesIO(df))
-    st, out = req('POST', '/build?t=' + IMAGE, bio.getvalue(), raw=True)
-    if st not in (200, 201):
-        print('build fallo:', st, out[-300:])
-        sys.exit(1)
+    last = b''
+    for attempt in range(3):
+        try:
+            st, out = req('POST', '/build?t=' + IMAGE, bio.getvalue(), raw=True)
+        except Exception as e:
+            # el build via sock a veces se corta a mitad de stream (pull lento)
+            last = repr(e).encode()
+            time.sleep(10)
+            continue
+        if st in (200, 201):
+            return
+        last = out[-300:]
+        time.sleep(10)
+    print('build fallo:', last)
+    sys.exit(1)
 
 def container_state():
     st, out = req('GET', '/containers/%s/json' % NAME)
