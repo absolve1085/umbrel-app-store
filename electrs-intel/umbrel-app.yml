@@ -18,8 +18,12 @@ description: |-
 
   IMPORTANTE: solo para tu propio servidor. Si tu servidor es publico,
   informa del logging en tu politica de privacidad.
-version: "0.2.1"
+version: "0.2.2"
 releaseNotes: >-
+  0.2.2 — excluye el trafico propio (IP del monitor y gateway/proxy docker)
+  del sniffer y del parser, con limpieza del historial ya capturado: el
+  dashboard muestra solo clientes reales, no las queries del monitor.
+
   0.2.1 — fix autodescubrimiento: usa el gateway del host cuando el servidor
   Electrum publica su puerto en el host (redes docker aisladas); reintentos
   en el deploy del sniffer via docker.sock.

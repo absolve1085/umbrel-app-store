@@ -236,8 +236,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--db', default='snoop.db')
     ap.add_argument('--port', type=int, default=ELECTRUM_PORT)
+    ap.add_argument('--exclude', default='',
+                    help='IPs a ignorar (trafico propio), separadas por comas')
+    ap.add_argument('--prune', action='store_true',
+                    help='borra del db conns/requests de las IPs excluidas')
     ap.add_argument('inputs', nargs='+')
     a = ap.parse_args()
+    EXCL = {ip.strip() for ip in a.exclude.split(',') if ip.strip()}
 
     files = []
     for arg in a.inputs:
@@ -264,6 +269,12 @@ def main():
     create table if not exists addresses(
       address text primary key, scripthash text, source text, first_seen real);
     ''')
+    if a.prune and EXCL:
+        q = ','.join('?' * len(EXCL))
+        con.execute('delete from requests where conn_id in '
+                    '(select id from conns where ip in (%s))' % q, tuple(EXCL))
+        con.execute('delete from conns where ip in (%s)' % q, tuple(EXCL))
+        con.commit()
 
     flows = {}
     def conn_of(cip, cport):
@@ -286,6 +297,8 @@ def main():
             if tcp is None:
                 continue
             src, sport, dst, dport, seq, payload = tcp
+            if src in EXCL or dst in EXCL:
+                continue
             if not payload or (sport != a.port and dport != a.port):
                 continue
             if src in LOCAL_IPS:

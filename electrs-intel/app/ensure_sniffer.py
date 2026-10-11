@@ -3,7 +3,7 @@ import json, os, socket, io, tarfile, sys, time
 
 SOCK = '/var/run/docker.sock'
 NAME = 'electrs-intel-sniffer'
-IMAGE = 'electrs-intel-sniffer:0.2.1'
+IMAGE = 'electrs-intel-sniffer:0.2.2'
 
 def req(method, path, body=None, raw=False):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -57,14 +57,24 @@ def container_state():
         return None
     return json.loads(out)
 
+def tcpdump_cmd(port, excl):
+    cmd = ['-i', 'any', '-s0', '-U', '-W', '30', '-C', '100',
+           '-w', '/data/capture.pcap', 'tcp', 'port', str(port)]
+    for ip in excl:
+        cmd += ['and', 'not', 'host', ip]
+    return cmd
+
 def main():
     data_dir = os.environ.get('APP_DATA_DIR', '/data')
     port = os.environ.get('ELECTRUM_PORT', '50001')
+    excl = [ip.strip() for ip in os.environ.get('EXCLUDE_IPS', '').split(',') if ip.strip()]
     if not image_exists():
         print('compilando imagen', IMAGE)
         build_image()
     c = container_state()
-    cmd_ok = c and c.get('Config', {}).get('Cmd') and ('port %s' % port) in ' '.join(c['Config']['Cmd'])
+    joined = ' '.join(c['Config']['Cmd']) if (c and c.get('Config', {}).get('Cmd')) else ''
+    needed = ['port %s' % port] + ['host %s' % ip for ip in excl]
+    cmd_ok = c and all(n in joined for n in needed)
     if c:
         running = c.get('State', {}).get('Running')
         if running and cmd_ok:
@@ -73,8 +83,7 @@ def main():
         req('DELETE', '/containers/%s?force=1' % NAME)
     body = {
         'Image': IMAGE,
-        'Cmd': ['-i', 'any', '-s0', '-U', '-W', '30', '-C', '100',
-                '-w', '/data/capture.pcap', 'tcp', 'port', port],
+        'Cmd': tcpdump_cmd(port, excl),
         'HostConfig': {
             'NetworkMode': 'host',
             'CapAdd': ['NET_RAW', 'NET_ADMIN'],
